@@ -5,7 +5,6 @@ export async function getJumboSales() {
   const url = "https://www.jumbo.com/aanbiedingen/alles";
   const browser = await puppeteer.launch({
     headless: true,
-    args: ["--no-sandbox", "--proxy-server=http://51.15.8.75:3738"],
   });
 
   try {
@@ -16,8 +15,6 @@ export async function getJumboSales() {
     await page.goto(url, {
       waitUntil: "networkidle2",
     });
-
-    console.log(await page.content());
 
     const acceptButton = await page.$("button#onetrust-accept-btn-handler");
     await acceptButton?.click();
@@ -70,6 +67,7 @@ export async function getJumboSales() {
 
           resultsByCategory[gridTitle].push({
             image: fixRelativeLinks(image),
+            category: gridTitle,
             tag,
             title,
             link: fixRelativeLinks(titleLink),

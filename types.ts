@@ -1,5 +1,6 @@
 export interface JumboSaleItem {
   title: string;
+  category: string;
   subtitle: string;
   image: string;
   link: string;
