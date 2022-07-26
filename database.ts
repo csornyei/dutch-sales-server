@@ -6,7 +6,7 @@ class Database {
 
   constructor() {
     initializeApp({
-      credential: cert("./sales-app-sa-key.json"),
+      credential: cert(process.env.GCLOUD_CERT_FILE_PATH!),
     });
     this.instance = getFirestore();
   }
