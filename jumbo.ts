@@ -1,20 +1,11 @@
-import puppeteer, { Page, ElementHandle } from "puppeteer";
+import { ElementHandle } from "puppeteer";
+import { autoScroll, getPage, getProperty, getTextContent } from "./puppeteer";
 import { JumboSales } from "./types";
 
 export async function getJumboSales() {
   const url = "https://www.jumbo.com/aanbiedingen/alles";
-  const browser = await puppeteer.launch({
-    headless: true,
-  });
-
   try {
-    const page = await browser.newPage();
-    await page.setUserAgent(
-      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
-    );
-    await page.goto(url, {
-      waitUntil: "networkidle2",
-    });
+    const page = await getPage(url);
 
     const acceptButton = await page.$("button#onetrust-accept-btn-handler");
     await acceptButton?.click();
@@ -84,40 +75,6 @@ export async function getJumboSales() {
     console.error(err);
     return {};
   }
-}
-
-async function autoScroll(page: Page) {
-  await page.evaluate(async () => {
-    await new Promise((resolve) => {
-      let totalHeight = 0;
-      const distance = 100;
-      const timer = setInterval(() => {
-        const scrollHeight = document.body.scrollHeight;
-        window.scrollBy(0, distance);
-        totalHeight += distance;
-
-        if (totalHeight >= scrollHeight - window.innerHeight) {
-          clearInterval(timer);
-          resolve(null);
-        }
-      }, 50);
-    });
-  });
-}
-
-async function getProperty(
-  parent: ElementHandle,
-  selector: string,
-  propertyName: string
-) {
-  const el = await parent.$(selector);
-  const textContent = await el?.getProperty(propertyName);
-  const text = (await textContent?.jsonValue()) as string;
-  return text;
-}
-
-async function getTextContent(parent: ElementHandle, selector: string) {
-  return (await getProperty(parent, selector, "textContent")).trim();
 }
 
 function fixRelativeLinks(link: string) {
