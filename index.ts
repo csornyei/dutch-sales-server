@@ -3,6 +3,7 @@ import morgan from "morgan";
 import { getJumboSales } from "./jumbo";
 import db from "./database";
 import { createWriteStream } from "fs";
+import { getPage } from "./puppeteer";
 
 const { PORT } = process.env;
 
@@ -19,6 +20,23 @@ app.get("/", (_, res) => {
   res.send({
     message: "hello from the scrapper!",
   });
+});
+
+app.get("/pup", async (_, res) => {
+  try {
+    const page = await getPage("https://google.com");
+    const inputs = await page.$$("input");
+    const values = [];
+    for (const i in inputs) {
+      const input = inputs[i];
+      const value = await input.getProperty("value");
+      values.push(await value.jsonValue());
+    }
+    res.send(values);
+  } catch (error: any) {
+    console.log(error);
+    res.status(500).send((error as Error).message);
+  }
 });
 
 app.get("/jumbo", async (_, res) => {
@@ -54,6 +72,7 @@ app.get("/jumbo", async (_, res) => {
       result,
     });
   } catch (error) {
+    console.error(error);
     res.status(500).send(error);
   }
 });
