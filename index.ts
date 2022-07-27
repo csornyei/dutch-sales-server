@@ -2,8 +2,9 @@ import express from "express";
 import morgan from "morgan";
 import { getJumboSales } from "./jumbo";
 import db from "./database";
-import { createWriteStream } from "fs";
+import { createWriteStream, readFileSync } from "fs";
 import { getPage } from "./puppeteer";
+import packageJson from "./package.json";
 
 const { PORT } = process.env;
 
@@ -19,6 +20,14 @@ app.use(
 app.get("/", (_, res) => {
   res.send({
     message: "hello from the scrapper!",
+  });
+});
+
+app.get("/healthcheck", (req, res) => {
+  res.send({
+    status: "OK",
+    uptime: process.uptime(),
+    version: packageJson.version,
   });
 });
 
