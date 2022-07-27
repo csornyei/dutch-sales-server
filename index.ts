@@ -1,11 +1,11 @@
 import express from "express";
 import morgan from "morgan";
-import { getJumboSales } from "./jumbo";
+import { createWriteStream } from "fs";
 import db from "./database";
-import { createWriteStream, readFileSync } from "fs";
-import { getPage } from "./puppeteer";
+import { getJumboSales } from "./jumbo";
+import { compareStates } from "./site-state";
+import { SupportedSites } from "./utils/types";
 import packageJson from "./package.json";
-import { compareStates, SupportedSites } from "./site-state";
 
 const { PORT } = process.env;
 
@@ -30,23 +30,6 @@ app.get("/healthcheck", (req, res) => {
     uptime: process.uptime(),
     version: packageJson.version,
   });
-});
-
-app.get("/pup", async (_, res) => {
-  try {
-    const page = await getPage("https://google.com");
-    const inputs = await page.$$("input");
-    const values = [];
-    for (const i in inputs) {
-      const input = inputs[i];
-      const value = await input.getProperty("value");
-      values.push(await value.jsonValue());
-    }
-    res.send(values);
-  } catch (error: any) {
-    console.log(error);
-    res.status(500).send((error as Error).message);
-  }
 });
 
 app.get("/jumbo", async (_, res) => {

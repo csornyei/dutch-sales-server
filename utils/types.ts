@@ -12,3 +12,13 @@ export interface JumboSaleItem {
 export interface JumboSales {
   [key: string]: JumboSaleItem[];
 }
+
+export enum SupportedSites {
+  jumbo = "Jumbo",
+}
+
+export type SiteValue = { url: string; selector: string };
+
+export type SiteValues = {
+  [key in SupportedSites]: SiteValue;
+};

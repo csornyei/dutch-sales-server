@@ -1,25 +1,23 @@
 import { ElementHandle } from "puppeteer";
-import { autoScroll, getPage, getProperty, getTextContent } from "./puppeteer";
-import { JumboSales } from "./types";
+import { getProperty, getTextContent, Scrapper } from "./puppeteer";
+import { JumboSales, SupportedSites } from "./utils/types";
 
 export async function getJumboSales() {
-  const url = "https://www.jumbo.com/aanbiedingen/alles";
   try {
-    const page = await getPage(url);
-
-    const acceptButton = await page.$("button#onetrust-accept-btn-handler");
-    await acceptButton?.click();
+    const scrapper = new Scrapper(SupportedSites.jumbo);
+    await scrapper.init();
+    await scrapper.clickElement("button#onetrust-accept-btn-handler");
 
     const resultsByCategory: JumboSales = {};
 
-    const toggleButtons = await page.$$(
+    const toggleButtons = await scrapper.$$(
       ".jum-promotion-toggle>button:not(.disabled)"
     );
     for (const button of toggleButtons) {
       await button.click();
-      await autoScroll(page);
+      await scrapper.autoScroll();
 
-      const promotionGrids = await page.$$(
+      const promotionGrids = await scrapper.$$(
         "div.jum-card-grid.jum-card-grid-promotion"
       );
 

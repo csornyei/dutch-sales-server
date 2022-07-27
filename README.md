@@ -10,11 +10,12 @@ export GCLOUD_CERT_FILE_PATH=./sales-app-sa-key.json && yarn start
 
 ## Todos
 
+- [x] Check if getting data is really needed
+  - [ ] change from puppeteer to simpler fetching
 - [ ] Create CRON job to automatically run web scraping
 - [ ] Add more supermarkets
   - [ ] Albert Heijn
   - [ ] Coop
   - [ ] Aldi
   - [ ] Lidl
-- [ ] Check if getting data is really needed
 - [ ] Parse dates to create TTL for db objects

@@ -1,22 +1,7 @@
 import { readFileSync, writeFileSync } from "fs";
 import { getPage, getTextContent } from "./puppeteer";
-
-export enum SupportedSites {
-  jumbo = "Jumbo",
-}
-
-type SiteValue = { url: string; selector: string };
-
-type SiteValues = {
-  [key in SupportedSites]: SiteValue;
-};
-
-const siteValues: SiteValues = {
-  [SupportedSites.jumbo]: {
-    url: "https://www.jumbo.com/aanbiedingen/alles",
-    selector: ".jum-promotion-toggle>button",
-  },
-};
+import { siteValues } from "./utils/constants";
+import { SupportedSites } from "./utils/types";
 
 function getOldState(siteName: SupportedSites) {
   const oldState = readFileSync(`${siteName}.state`);
@@ -27,8 +12,9 @@ function updateState(siteName: SupportedSites, newState: string) {
   writeFileSync(`${siteName}.state`, newState);
 }
 
-async function getCurrentState({ url, selector }: SiteValue) {
-  const page = await getPage(url);
+async function getCurrentState(site: SupportedSites) {
+  const { selector } = siteValues[site];
+  const page = await getPage(site);
   const selected = await page.$$(selector);
   let state = "";
   for (const elements of selected) {
@@ -41,7 +27,7 @@ async function getCurrentState({ url, selector }: SiteValue) {
 
 export async function compareStates(siteName: SupportedSites) {
   const oldState = getOldState(siteName);
-  const currentState = await getCurrentState(siteValues[siteName]);
+  const currentState = await getCurrentState(siteName);
 
   if (oldState !== currentState) {
     updateState(siteName, currentState);

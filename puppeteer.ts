@@ -1,37 +1,6 @@
 import puppeteer, { Page, ElementHandle } from "puppeteer";
-
-export async function getPage(url: string) {
-  const browser = await puppeteer.launch({
-    headless: true,
-  });
-  const page = await browser.newPage();
-  await page.setUserAgent(
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
-  );
-  await page.goto(url, {
-    waitUntil: "networkidle2",
-  });
-  return page;
-}
-
-export async function autoScroll(page: Page) {
-  await page.evaluate(async () => {
-    await new Promise((resolve) => {
-      let totalHeight = 0;
-      const distance = 100;
-      const timer = setInterval(() => {
-        const scrollHeight = document.body.scrollHeight;
-        window.scrollBy(0, distance);
-        totalHeight += distance;
-
-        if (totalHeight >= scrollHeight - window.innerHeight) {
-          clearInterval(timer);
-          resolve(null);
-        }
-      }, 50);
-    });
-  });
-}
+import { siteValues } from "./utils/constants";
+import { SupportedSites } from "./utils/types";
 
 export async function getProperty(
   parent: ElementHandle,
@@ -46,4 +15,68 @@ export async function getProperty(
 
 export async function getTextContent(parent: ElementHandle, selector: string) {
   return (await getProperty(parent, selector, "textContent")).trim();
+}
+
+export class Scrapper {
+  private page: Page | null;
+  constructor(private site: SupportedSites) {
+    this.page = null;
+  }
+
+  async init() {
+    const browser = await puppeteer.launch({
+      headless: true,
+    });
+    this.page = await browser.newPage();
+    await this.page.setUserAgent(
+      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
+    );
+    await this.page.goto(siteValues[this.site].url, {
+      waitUntil: "networkidle2",
+    });
+  }
+
+  async autoScroll() {
+    if (!this.page) {
+      throw new Error("Call init first!");
+    }
+    await this.page.evaluate(async () => {
+      await new Promise((resolve) => {
+        let totalHeight = 0;
+        const distance = 100;
+        const timer = setInterval(() => {
+          const scrollHeight = document.body.scrollHeight;
+          window.scrollBy(0, distance);
+          totalHeight += distance;
+
+          if (totalHeight >= scrollHeight - window.innerHeight) {
+            clearInterval(timer);
+            resolve(null);
+          }
+        }, 50);
+      });
+    });
+  }
+
+  async clickElement(selector: string) {
+    if (!this.page) {
+      throw new Error("Call init first!");
+    }
+    const acceptButton = await this.$(selector);
+    await acceptButton?.click();
+  }
+
+  async $(selector: string) {
+    if (!this.page) {
+      throw new Error("Call init first!");
+    }
+    return await this.page.$(selector);
+  }
+
+  async $$(selector: string) {
+    if (!this.page) {
+      throw new Error("Call init first!");
+    }
+    return await this.page.$$(selector);
+  }
 }
