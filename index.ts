@@ -5,6 +5,7 @@ import db from "./database";
 import { createWriteStream, readFileSync } from "fs";
 import { getPage } from "./puppeteer";
 import packageJson from "./package.json";
+import { compareStates, SupportedSites } from "./site-state";
 
 const { PORT } = process.env;
 
@@ -50,36 +51,44 @@ app.get("/pup", async (_, res) => {
 
 app.get("/jumbo", async (_, res) => {
   try {
-    const results = await getJumboSales();
+    const updated = await compareStates(SupportedSites.jumbo);
 
-    const saveOps = [];
+    if (updated) {
+      const results = await getJumboSales();
 
-    for (const key in results) {
-      if (Object.prototype.hasOwnProperty.call(results, key)) {
-        const saleList = results[key];
-        for (const saleKey in saleList) {
-          if (Object.prototype.hasOwnProperty.call(saleList, saleKey)) {
-            const sale = saleList[saleKey];
-            saveOps.push(
-              new Promise(async (res, rej) => {
-                try {
-                  const id = await db.save(sale);
-                  res(id);
-                } catch (error) {
-                  rej(error);
-                }
-              })
-            );
+      const saveOps = [];
+
+      for (const key in results) {
+        if (Object.prototype.hasOwnProperty.call(results, key)) {
+          const saleList = results[key];
+          for (const saleKey in saleList) {
+            if (Object.prototype.hasOwnProperty.call(saleList, saleKey)) {
+              const sale = saleList[saleKey];
+              saveOps.push(
+                new Promise(async (res, rej) => {
+                  try {
+                    const id = await db.save(sale);
+                    res(id);
+                  } catch (error) {
+                    rej(error);
+                  }
+                })
+              );
+            }
           }
         }
       }
+
+      const result = await Promise.all(saveOps);
+
+      res.send({
+        result,
+      });
+    } else {
+      res.send({
+        message: "there are no updates!",
+      });
     }
-
-    const result = await Promise.all(saveOps);
-
-    res.send({
-      result,
-    });
   } catch (error) {
     console.error(error);
     res.status(500).send(error);
