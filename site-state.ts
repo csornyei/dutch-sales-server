@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from "fs";
-import { getPage, getTextContent } from "./puppeteer";
+import { Scrapper } from "./scrapper";
 import { siteValues } from "./utils/constants";
 import { SupportedSites } from "./utils/types";
 
@@ -14,14 +14,9 @@ function updateState(siteName: SupportedSites, newState: string) {
 
 async function getCurrentState(site: SupportedSites) {
   const { selector } = siteValues[site];
-  const page = await getPage(site);
-  const selected = await page.$$(selector);
-  let state = "";
-  for (const elements of selected) {
-    const textContent = await elements.getProperty("textContent");
-    const text = (await textContent?.jsonValue()) as string;
-    state += text;
-  }
+  const scrapper = new Scrapper(site);
+  const html = await scrapper.getHtml();
+  const state = scrapper.getElementTextFromHtml(html, selector);
   return state;
 }
 

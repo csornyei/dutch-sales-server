@@ -1,6 +1,6 @@
 {
   "name": "sales-server",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Express server to get sales data",
   "main": "index.ts",
   "author": "Mate Mark Csornyei <mate@csornyei.com>",
@@ -21,6 +21,8 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
+    "axios": "^0.27.2",
+    "cheerio": "^1.0.0-rc.12",
     "express": "^4.18.1",
     "firebase-admin": "^11.0.0",
     "morgan": "^1.10.0",

@@ -1,5 +1,5 @@
 import { ElementHandle } from "puppeteer";
-import { getProperty, getTextContent, Scrapper } from "./puppeteer";
+import { getProperty, getTextContent, Scrapper } from "./scrapper";
 import { JumboSales, SupportedSites } from "./utils/types";
 
 export async function getJumboSales() {

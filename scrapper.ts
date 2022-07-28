@@ -1,3 +1,5 @@
+import axios from "axios";
+import { load } from "cheerio";
 import puppeteer, { Page, ElementHandle } from "puppeteer";
 import { siteValues } from "./utils/constants";
 import { SupportedSites } from "./utils/types";
@@ -34,6 +36,21 @@ export class Scrapper {
     await this.page.goto(siteValues[this.site].url, {
       waitUntil: "networkidle2",
     });
+  }
+
+  async getHtml() {
+    const { url } = siteValues[this.site];
+    const { data } = await axios(url);
+
+    return data;
+  }
+
+  getElementTextFromHtml(html: string, selector: string) {
+    const $ = load(html);
+
+    const buttons = $(selector);
+
+    return buttons.text();
   }
 
   async autoScroll() {
