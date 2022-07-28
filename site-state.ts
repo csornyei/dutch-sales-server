@@ -9,7 +9,7 @@ function getOldState(siteName: SupportedSites) {
 }
 
 function updateState(siteName: SupportedSites, newState: string) {
-  writeFileSync(`${siteName}.state`, newState);
+  writeFileSync(`${siteName}.state`, newState.trim());
 }
 
 async function getCurrentState(site: SupportedSites) {
@@ -17,7 +17,7 @@ async function getCurrentState(site: SupportedSites) {
   const scrapper = new Scrapper(site);
   const html = await scrapper.getHtml();
   const state = scrapper.getElementTextFromHtml(html, selector);
-  return state;
+  return state.trim();
 }
 
 export async function compareStates(siteName: SupportedSites) {

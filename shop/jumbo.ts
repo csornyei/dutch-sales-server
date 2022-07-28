@@ -1,6 +1,6 @@
 import { ElementHandle } from "puppeteer";
-import { getProperty, getTextContent, Scrapper } from "./scrapper";
-import { JumboSales, SupportedSites } from "./utils/types";
+import { getProperty, getTextContent, Scrapper } from "../scrapper";
+import { SalesList, SupportedSites } from "../utils/types";
 
 export async function getJumboSales() {
   try {
@@ -8,7 +8,7 @@ export async function getJumboSales() {
     await scrapper.init();
     await scrapper.clickElement("button#onetrust-accept-btn-handler");
 
-    const resultsByCategory: JumboSales = {};
+    const resultsByCategory: SalesList = {};
 
     const toggleButtons = await scrapper.$$(
       ".jum-promotion-toggle>button:not(.disabled)"
