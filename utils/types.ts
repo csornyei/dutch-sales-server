@@ -15,7 +15,7 @@ export interface SalesList {
 
 export enum SupportedSites {
   jumbo = "Jumbo",
-  albertHeijn = "Albert Heijn",
+  albertHeijn = "albertHeijn",
 }
 
 export type SiteValue = { url: string; selector: string };

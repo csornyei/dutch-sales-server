@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from "express";
 import db from "../database";
 import { compareStates } from "../site-state";
 import { SupportedSites } from "../utils/types";
+import { getAHSales } from "./ah";
 import { getJumboSales } from "./jumbo";
 
 const router = Router();
@@ -19,17 +20,61 @@ function getUpdatedMiddleware(site: SupportedSites) {
   };
 }
 
+router.get("/", (_, res) => {
+  res.send(
+    `
+      <h1>Current shops</h1>
+      <ul>
+        <li>
+          <a href="/shop/jumbo">Jumbo</a>
+        </li> 
+        <li>
+          <a href="albert-heijn">Albert Heijn</a>
+        </li>
+      </ul>
+    `
+  );
+});
+
 router.get(
   "/jumbo",
   getUpdatedMiddleware(SupportedSites.jumbo),
   async (_, res) => {
     try {
       const results = await getJumboSales();
-
-      const result = await db.saveListToDb(results);
+      let result: any[];
+      if (process.env.NODE_ENV === "production") {
+        result = await db.saveListToDb(results);
+      } else {
+        result = [];
+      }
 
       res.send({
         result,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send(error);
+    }
+  }
+);
+
+router.get(
+  "/albert-heijn",
+  getUpdatedMiddleware(SupportedSites.albertHeijn),
+  async (_, res) => {
+    try {
+      const results = await getAHSales();
+
+      let result: any[];
+      if (process.env.NODE_ENV === "production") {
+        result = await db.saveListToDb(results);
+      } else {
+        result = [];
+      }
+
+      res.send({
+        results,
       });
     } catch (error) {
       console.error(error);

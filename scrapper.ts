@@ -16,7 +16,12 @@ export async function getProperty(
 }
 
 export async function getTextContent(parent: ElementHandle, selector: string) {
-  return (await getProperty(parent, selector, "textContent")).trim();
+  try {
+    return (await getProperty(parent, selector, "textContent")).trim();
+  } catch (error) {
+    console.error(`getTextContent ${selector}`, error);
+    return "";
+  }
 }
 
 export class Scrapper {
@@ -27,7 +32,7 @@ export class Scrapper {
 
   async init() {
     const browser = await puppeteer.launch({
-      headless: true,
+      headless: false,
     });
     this.page = await browser.newPage();
     await this.page.setUserAgent(
@@ -87,6 +92,7 @@ export class Scrapper {
     if (!this.page) {
       throw new Error("Call init first!");
     }
+    await this.page.waitForSelector(selector);
     return await this.page.$(selector);
   }
 
@@ -94,6 +100,7 @@ export class Scrapper {
     if (!this.page) {
       throw new Error("Call init first!");
     }
+    await this.page.waitForSelector(selector);
     return await this.page.$$(selector);
   }
 }
