@@ -15,8 +15,8 @@ export GCLOUD_CERT_FILE_PATH=./sales-app-sa-key.json && yarn start
 - [ ] Create CRON job to automatically run web scraping
 - [ ] Create setup script which creates a service and run the server in background
 - [ ] Add more supermarkets
-  - [ ] Albert Heijn
+  - [x] Albert Heijn
   - [ ] Coop
-  - [ ] Aldi
-  - [ ] Lidl
+  - [x] Aldi
+  - [ ] Ekoplaza
 - [ ] Parse dates to create TTL for db objects

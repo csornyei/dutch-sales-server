@@ -14,8 +14,11 @@ export interface SalesList {
 }
 
 export enum SupportedSites {
-  jumbo = "Jumbo",
+  jumbo = "jumbo",
   albertHeijn = "albertHeijn",
+  aldi = "aldi",
+  coop = "coop",
+  ekoplaza = "ekoplaza",
 }
 
 export type SiteValue = { url: string; selector: string };

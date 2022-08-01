@@ -7,17 +7,46 @@ import { SupportedSites } from "./utils/types";
 export async function getProperty(
   parent: ElementHandle,
   selector: string,
-  propertyName: string
+  propertyName: string,
+  all: boolean = false
 ) {
-  const el = await parent.$(selector);
-  const textContent = await el?.getProperty(propertyName);
-  const text = (await textContent?.jsonValue()) as string;
-  return text;
+  try {
+    if (all) {
+      const els = await parent.$$(selector);
+      const texts = [];
+      for (const el of els) {
+        const content = await el?.getProperty(propertyName);
+        const text = (await content?.jsonValue()) as string;
+        texts.push(text);
+      }
+      return texts.join(" ");
+    } else {
+      let el;
+      if (selector.length === 0) {
+        el = parent;
+      } else {
+        el = await parent.$(selector);
+      }
+      const textContent = await el?.getProperty(propertyName);
+      const text = (await textContent?.jsonValue()) as string;
+      return text;
+    }
+  } catch (error) {
+    console.error(`getProperty ${selector}`, error);
+    return "";
+  }
 }
 
-export async function getTextContent(parent: ElementHandle, selector: string) {
+export async function getTextContent(
+  parent: ElementHandle,
+  selector: string,
+  all: boolean = false
+) {
   try {
-    return (await getProperty(parent, selector, "textContent")).trim();
+    return (await getProperty(parent, selector, "textContent"))
+      .trim()
+      .replace(/[\r\n\t]/gm, " ")
+      .replace(/\s\s+/g, " ");
   } catch (error) {
     console.error(`getTextContent ${selector}`, error);
     return "";
@@ -32,7 +61,7 @@ export class Scrapper {
 
   async init() {
     const browser = await puppeteer.launch({
-      headless: false,
+      headless: process.env.NODE_ENV === "production",
     });
     this.page = await browser.newPage();
     await this.page.setUserAgent(

@@ -3,6 +3,7 @@ import db from "../database";
 import { compareStates } from "../site-state";
 import { SupportedSites } from "../utils/types";
 import { getAHSales } from "./ah";
+import { getAldiSales } from "./aldi";
 import { getJumboSales } from "./jumbo";
 
 const router = Router();
@@ -75,6 +76,30 @@ router.get(
 
       res.send({
         results,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send(error);
+    }
+  }
+);
+
+
+router.get(
+  "/aldi",
+  getUpdatedMiddleware(SupportedSites.aldi),
+  async (_, res) => {
+    try {
+      const results = await getAldiSales();
+      let result: any[];
+      if (process.env.NODE_ENV === "production") {
+        result = await db.saveListToDb(results);
+      } else {
+        result = [results];
+      }
+
+      res.send({
+        result,
       });
     } catch (error) {
       console.error(error);

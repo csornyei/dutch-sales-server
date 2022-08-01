@@ -3,8 +3,11 @@ import morgan from "morgan";
 import { createWriteStream } from "fs";
 import shopRoutes from "./shop";
 import packageJson from "./package.json";
+import { checkStateFiles } from "./site-state";
 
 const { PORT } = process.env;
+
+checkStateFiles();
 
 const app = express();
 

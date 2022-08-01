@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "fs";
+import { existsSync, readFileSync, writeFileSync } from "fs";
 import { Scrapper } from "./scrapper";
 import { siteValues } from "./utils/constants";
 import { SupportedSites } from "./utils/types";
@@ -29,4 +29,13 @@ export async function compareStates(siteName: SupportedSites) {
     return true;
   }
   return false;
+}
+
+export function checkStateFiles() {
+  Object.keys(siteValues).forEach((siteName) => {
+    const fileName = `${siteName}.state`;
+    if (!existsSync(fileName)) {
+      writeFileSync(fileName, "");
+    }
+  });
 }
