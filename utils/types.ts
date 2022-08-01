@@ -1,4 +1,4 @@
-export interface JumboSaleItem {
+export interface SaleItem {
   title: string;
   category: string;
   subtitle: string;
@@ -7,10 +7,11 @@ export interface JumboSaleItem {
   tag: string;
   from: string;
   until: string;
+  price?: string;
 }
 
 export interface SalesList {
-  [key: string]: JumboSaleItem[];
+  [key: string]: SaleItem[];
 }
 
 export enum SupportedSites {

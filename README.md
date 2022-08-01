@@ -2,7 +2,12 @@
 
 This small express server get the sales data from supermarkets websites and load it to a Firestore database.
 
-To run the app you need a service account certificate json and set GCLOUD_CERT_FILE_PATH environment variable to it's path. After that the server can be started with `yarn start`
+Required environment variables:
+
+- GCLOUD_CERT_FILE_PATH: path to google cloud service account certificate json
+- PORT: port where the server will listen
+
+The server can be started with `yarn start`
 
 ```
 export GCLOUD_CERT_FILE_PATH=./sales-app-sa-key.json && yarn start
@@ -18,5 +23,5 @@ export GCLOUD_CERT_FILE_PATH=./sales-app-sa-key.json && yarn start
   - [x] Albert Heijn
   - [ ] Coop
   - [x] Aldi
-  - [ ] Ekoplaza
+  - [x] Ekoplaza
 - [ ] Parse dates to create TTL for db objects

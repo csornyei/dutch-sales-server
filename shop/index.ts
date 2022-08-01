@@ -4,6 +4,7 @@ import { compareStates } from "../site-state";
 import { SupportedSites } from "../utils/types";
 import { getAHSales } from "./ah";
 import { getAldiSales } from "./aldi";
+import { getEkoplazaSales } from "./ekoplaza";
 import { getJumboSales } from "./jumbo";
 
 const router = Router();
@@ -30,7 +31,13 @@ router.get("/", (_, res) => {
           <a href="/shop/jumbo">Jumbo</a>
         </li> 
         <li>
-          <a href="albert-heijn">Albert Heijn</a>
+          <a href="/shop/albert-heijn">Albert Heijn</a>
+        </li>
+        <li>
+          <a href="/shop/aldi">Aldi</a>
+        </li>
+        <li>
+          <a href="/shop/ekoplaza">Ekoplaza</a>
         </li>
       </ul>
     `
@@ -91,6 +98,29 @@ router.get(
   async (_, res) => {
     try {
       const results = await getAldiSales();
+      let result: any[];
+      if (process.env.NODE_ENV === "production") {
+        result = await db.saveListToDb(results);
+      } else {
+        result = [results];
+      }
+
+      res.send({
+        result,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send(error);
+    }
+  }
+);
+
+router.get(
+  "/ekoplaza",
+  getUpdatedMiddleware(SupportedSites.ekoplaza),
+  async (_, res) => {
+    try {
+      const results = await getEkoplazaSales();
       let result: any[];
       if (process.env.NODE_ENV === "production") {
         result = await db.saveListToDb(results);

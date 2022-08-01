@@ -43,7 +43,7 @@ export async function getTextContent(
   all: boolean = false
 ) {
   try {
-    return (await getProperty(parent, selector, "textContent"))
+    return (await getProperty(parent, selector, "textContent", all))
       .trim()
       .replace(/[\r\n\t]/gm, " ")
       .replace(/\s\s+/g, " ");
