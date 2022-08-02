@@ -19,6 +19,6 @@ export const siteValues: SiteValues = {
   },
   [SupportedSites.ekoplaza]: {
     url: "https://www.ekoplaza.nl/nl/aanbiedingen",
-    selector: ".product-header-title>.sub-title",
+    selector: ".product-header-title>.sub-wrapper>.sub-title",
   },
 };
