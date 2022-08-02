@@ -35,6 +35,7 @@ export async function getAHSales() {
         const title = await getTextContent(card, "div>p>span");
         const tag = await getTextContent(card, "div>div>p");
         resultsByCategory[sectionTitle].push({
+          site: SupportedSites.albertHeijn,
           image,
           link: typeof link === "string" ? link : "",
           category: sectionTitle,
