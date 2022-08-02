@@ -49,6 +49,7 @@ export async function getAldiSales() {
             .replace(/[\r\n\t]/gm, " ")
             .replace(/\s\s+/g, " ");
           resultsByCategory[sectionTitle].push({
+            site: SupportedSites.aldi,
             image: fixRelativeLinks(image),
             link,
             category: sectionTitle,

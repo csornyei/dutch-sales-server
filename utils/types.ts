@@ -1,4 +1,5 @@
 export interface SaleItem {
+  site: SupportedSites;
   title: string;
   category: string;
   subtitle: string;

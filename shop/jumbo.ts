@@ -56,6 +56,7 @@ export async function getJumboSales() {
           const [from, until] = dates.split("t/m");
 
           resultsByCategory[gridTitle].push({
+            site: SupportedSites.jumbo,
             image: fixRelativeLinks(image),
             category: gridTitle,
             tag,

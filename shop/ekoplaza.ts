@@ -55,6 +55,7 @@ export async function getEkoplazaSales() {
           `${currentPriceEuro},${currentPriceCent}` +
           (oldPrice.length > 0 ? ` ~~${oldPrice}~~` : "");
         resultsByCategory[sectionTitle].push({
+          site: SupportedSites.ekoplaza,
           image,
           link,
           category: sectionTitle,
