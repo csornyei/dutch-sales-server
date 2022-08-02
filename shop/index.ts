@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import db from "../database";
+import logger from "../logger";
 import { compareStates } from "../site-state";
 import { SupportedSites } from "../utils/types";
 import { getAHSales } from "./ah";
@@ -54,14 +55,14 @@ router.get(
       if (process.env.NODE_ENV === "production") {
         result = await db.saveListToDb(results);
       } else {
-        result = [];
+        result = [results];
       }
 
       res.send({
         result,
       });
     } catch (error) {
-      console.error(error);
+      logger.log("error", `error in /shop/jumbo`, error);
       res.status(500).send(error);
     }
   }
@@ -78,14 +79,14 @@ router.get(
       if (process.env.NODE_ENV === "production") {
         result = await db.saveListToDb(results);
       } else {
-        result = [];
+        result = [results];
       }
 
       res.send({
         results,
       });
     } catch (error) {
-      console.error(error);
+      logger.log("error", `error in /shop/albert-heijn`, error);
       res.status(500).send(error);
     }
   }
@@ -109,7 +110,7 @@ router.get(
         result,
       });
     } catch (error) {
-      console.error(error);
+      logger.log("error", `error in /shop/aldi`, error);
       res.status(500).send(error);
     }
   }
@@ -132,7 +133,7 @@ router.get(
         result,
       });
     } catch (error) {
-      console.error(error);
+      logger.log("error", `error in /shop/ekoplaza`, error);
       res.status(500).send(error);
     }
   }

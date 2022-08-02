@@ -1,3 +1,4 @@
+import logger from "../logger";
 import { getProperty, getTextContent, Scrapper } from "../scrapper";
 import { SalesList, SupportedSites } from "../utils/types";
 
@@ -48,7 +49,7 @@ export async function getAHSales() {
 
     return resultsByCategory;
   } catch (error) {
-    console.error(error);
+    logger.log("error", `error while getting AH sales`, error);
     return {};
   }
 }

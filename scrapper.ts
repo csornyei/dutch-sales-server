@@ -1,6 +1,7 @@
 import axios from "axios";
 import { load } from "cheerio";
 import puppeteer, { Page, ElementHandle } from "puppeteer";
+import logger from "./logger";
 import { siteValues } from "./utils/constants";
 import { SupportedSites } from "./utils/types";
 
@@ -32,7 +33,7 @@ export async function getProperty(
       return text;
     }
   } catch (error) {
-    console.error(`getProperty ${selector}`, error);
+    logger.log("error", `getProperty ${selector}`, error);
     return "";
   }
 }
@@ -48,7 +49,7 @@ export async function getTextContent(
       .replace(/[\r\n\t]/gm, " ")
       .replace(/\s\s+/g, " ");
   } catch (error) {
-    console.error(`getTextContent ${selector}`, error);
+    logger.log("error", `getTextContent ${selector}`, error);
     return "";
   }
 }

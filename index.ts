@@ -4,6 +4,7 @@ import { createWriteStream } from "fs";
 import shopRoutes from "./shop";
 import packageJson from "./package.json";
 import { checkStateFiles } from "./site-state";
+import logger from "./logger";
 
 const { PORT } = process.env;
 
@@ -35,5 +36,5 @@ app.get("/healthcheck", (req, res) => {
 app.use("/shop", shopRoutes);
 
 app.listen(PORT, () => {
-  console.log(`listening on port ${PORT}`);
+  logger.log("info", `listening on port ${PORT}`);
 });

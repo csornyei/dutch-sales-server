@@ -1,5 +1,5 @@
 [Unit]
-Description=My app
+Description=Sales server
 
 [Service]
 ExecStart=yarn --cwd /home/pi/dutch-sales-server start 

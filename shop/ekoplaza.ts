@@ -1,5 +1,6 @@
 import { parse, format } from "date-fns";
 import { nl } from "date-fns/locale";
+import logger from "../logger";
 import { getProperty, getTextContent, Scrapper } from "../scrapper";
 import { SalesList, SupportedSites } from "../utils/types";
 
@@ -69,7 +70,7 @@ export async function getEkoplazaSales() {
 
     return resultsByCategory;
   } catch (error) {
-    console.error(error);
+    logger.log("error", `error while getting Ekoplaza sales`, error);
     return {};
   }
 }

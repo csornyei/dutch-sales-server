@@ -1,4 +1,5 @@
 import { endOfWeek, format } from "date-fns";
+import logger from "../logger";
 import { getProperty, getTextContent, Scrapper } from "../scrapper";
 import { SalesList, SupportedSites } from "../utils/types";
 
@@ -63,7 +64,7 @@ export async function getAldiSales() {
 
     return resultsByCategory;
   } catch (error) {
-    console.error(error);
+    logger.log("error", `error while getting Aldi sales`, error);
     return {};
   }
 }

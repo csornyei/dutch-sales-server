@@ -1,4 +1,5 @@
 import { ElementHandle } from "puppeteer";
+import logger from "../logger";
 import { getProperty, getTextContent, Scrapper } from "../scrapper";
 import { SalesList, SupportedSites } from "../utils/types";
 
@@ -69,8 +70,8 @@ export async function getJumboSales() {
     }
 
     return resultsByCategory;
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    logger.log("error", `error while Jumbo AH sales`, error);
     return {};
   }
 }
