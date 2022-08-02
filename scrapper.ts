@@ -70,6 +70,7 @@ export class Scrapper {
     );
     await this.page.goto(siteValues[this.site].url, {
       waitUntil: "networkidle2",
+      timeout: 0
     });
   }
 

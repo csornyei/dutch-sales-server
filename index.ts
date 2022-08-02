@@ -27,7 +27,7 @@ app.get("/", (_, res) => {
 
 app.get("/healthcheck", (req, res) => {
   res.send({
-    status: "OK",
+    env: process.env.NODE_ENV,
     uptime: process.uptime(),
     version: packageJson.version,
   });
