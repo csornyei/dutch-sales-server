@@ -17,8 +17,8 @@ export GCLOUD_CERT_FILE_PATH=./sales-app-sa-key.json && yarn start
 
 - [x] Check if getting data is really needed
   - [x] change from puppeteer to simpler fetching
-- [ ] Create CRON job to automatically run web scraping
-- [ ] Create setup script which creates a service and run the server in background
+- [x] Create CRON job to automatically run web scraping
+- [x] Create setup script which creates a service and run the server in background
 - [ ] Add more supermarkets
   - [x] Albert Heijn
   - [ ] Coop

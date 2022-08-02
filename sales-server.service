@@ -1,0 +1,16 @@
+[Unit]
+Description=My app
+
+[Service]
+ExecStart=yarn --cwd /home/pi/dutch-sales-server start 
+Restart=always
+RestartSec=1
+User=pi
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+Environment=GCLOUD_CERT_FILE_PATH=/home/pi/sales-app-sa-key.json
+Environment=PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+Environment=PORT=8080
+
+[Install]
+WantedBy=multi-user.target
