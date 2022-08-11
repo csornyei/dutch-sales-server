@@ -68,7 +68,7 @@ export async function getEkoplazaSales() {
         });
       }
     }
-
+    await scrapper.close();
     return resultsByCategory;
   } catch (error) {
     logger.log("error", `error while getting Ekoplaza sales`, error);

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { load } from "cheerio";
-import puppeteer, { Page, ElementHandle } from "puppeteer";
+import puppeteer, { Page, ElementHandle, Browser } from "puppeteer";
 import logger from "./logger";
 import { siteValues } from "./utils/constants";
 import { SupportedSites } from "./utils/types";
@@ -56,21 +56,23 @@ export async function getTextContent(
 
 export class Scrapper {
   private page: Page | null;
+  private browser: Browser | null;
   constructor(private site: SupportedSites) {
     this.page = null;
+    this.browser = null;
   }
 
   async init() {
-    const browser = await puppeteer.launch({
+    this.browser = await puppeteer.launch({
       headless: process.env.NODE_ENV === "production",
     });
-    this.page = await browser.newPage();
+    this.page = await this.browser.newPage();
     await this.page.setUserAgent(
       "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
     );
     await this.page.goto(siteValues[this.site].url, {
       waitUntil: "networkidle2",
-      timeout: 0
+      timeout: 0,
     });
   }
 
@@ -133,5 +135,11 @@ export class Scrapper {
     }
     await this.page.waitForSelector(selector);
     return await this.page.$$(selector);
+  }
+
+  async close() {
+    this.browser?.close();
+    this.browser = null;
+    this.page = null;
   }
 }

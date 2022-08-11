@@ -62,7 +62,7 @@ export async function getAldiSales() {
         }
       }
     }
-
+    await scrapper.close();
     return resultsByCategory;
   } catch (error) {
     logger.log("error", `error while getting Aldi sales`, error);
