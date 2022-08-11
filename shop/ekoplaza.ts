@@ -1,4 +1,4 @@
-import { parse, format } from "date-fns";
+import { parse, format, add } from "date-fns";
 import { nl } from "date-fns/locale";
 import logger from "../logger";
 import { getProperty, getTextContent, Scrapper } from "../scrapper";
@@ -65,6 +65,7 @@ export async function getEkoplazaSales() {
           from,
           until,
           price,
+          ttl: add(new Date(), { weeks: 2 }),
         });
       }
     }

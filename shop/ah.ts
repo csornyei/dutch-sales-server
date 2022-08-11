@@ -1,3 +1,4 @@
+import { add } from "date-fns";
 import logger from "../logger";
 import { getProperty, getTextContent, Scrapper } from "../scrapper";
 import { SalesList, SupportedSites } from "../utils/types";
@@ -44,6 +45,7 @@ export async function getAHSales() {
           subtitle: "",
           from,
           until,
+          ttl: add(new Date(), { weeks: 2 }),
         });
       }
     }

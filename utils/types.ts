@@ -9,6 +9,7 @@ export interface SaleItem {
   from: string;
   until: string;
   price?: string;
+  ttl: Date;
 }
 
 export interface SalesList {
