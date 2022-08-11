@@ -69,7 +69,7 @@ export async function getJumboSales() {
         }
       }
     }
-
+    await scrapper.close();
     return resultsByCategory;
   } catch (error) {
     logger.log("error", `error while Jumbo AH sales`, error);

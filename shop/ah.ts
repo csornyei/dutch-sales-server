@@ -47,7 +47,7 @@ export async function getAHSales() {
         });
       }
     }
-
+    await scrapper.close();
     return resultsByCategory;
   } catch (error) {
     logger.log("error", `error while getting AH sales`, error);
