@@ -1,3 +1,4 @@
+import { add } from "date-fns";
 import { ElementHandle } from "puppeteer";
 import logger from "../logger";
 import { getProperty, getTextContent, Scrapper } from "../scrapper";
@@ -65,6 +66,7 @@ export async function getJumboSales() {
             subtitle,
             from: from ? from.trim() : "",
             until: until ? until.trim() : "",
+            ttl: add(new Date(), { weeks: 2 }),
           });
         }
       }

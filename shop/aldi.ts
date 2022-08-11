@@ -1,4 +1,4 @@
-import { endOfWeek, format } from "date-fns";
+import { add, endOfWeek, format } from "date-fns";
 import logger from "../logger";
 import { getProperty, getTextContent, Scrapper } from "../scrapper";
 import { SalesList, SupportedSites } from "../utils/types";
@@ -58,6 +58,7 @@ export async function getAldiSales() {
             subtitle: "",
             from,
             until,
+            ttl: add(new Date(), { weeks: 2 }),
           });
         }
       }
