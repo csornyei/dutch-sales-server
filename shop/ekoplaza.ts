@@ -1,8 +1,7 @@
-import { parse, format, add } from "date-fns";
-import { nl } from "date-fns/locale";
 import logger from "../logger";
 import { getProperty, getTextContent, Scrapper } from "../scrapper";
 import { SalesList, SupportedSites } from "../utils/types";
+import { newSaleItem } from "../utils/utils";
 
 export async function getEkoplazaSales() {
   try {
@@ -54,19 +53,18 @@ export async function getEkoplazaSales() {
         const price =
           `${currentPriceEuro},${currentPriceCent}` +
           (oldPrice.length > 0 ? ` ~~${oldPrice}~~` : "");
-        resultsByCategory[sectionTitle].push({
-          site: SupportedSites.ekoplaza,
-          image,
-          link,
-          category: sectionTitle,
-          tag,
-          title,
-          subtitle,
-          from,
-          until,
-          price,
-          ttl: add(new Date(), { weeks: 2 }),
-        });
+        resultsByCategory[sectionTitle].push(
+          newSaleItem(SupportedSites.ekoplaza, {
+            image,
+            category: sectionTitle,
+            tag,
+            title,
+            link: link,
+            subtitle,
+            from: from ? from.trim() : "",
+            until: until ? until.trim() : "",
+          })
+        );
       }
     }
     await scrapper.close();
