@@ -10,7 +10,7 @@ export interface SaleItem {
   from: string;
   until: string;
   price?: string;
-  ttl: Date;
+  ttl: number;
 }
 
 export interface SalesList {
