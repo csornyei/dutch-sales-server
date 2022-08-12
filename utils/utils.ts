@@ -24,7 +24,7 @@ export function newSaleItem(site: SupportedSites, item: Partial<SaleItem>) {
     subtitle: fixString(item.subtitle),
     from: fixString(item.from),
     until: fixString(item.until),
-    ttl: add(new Date(), { weeks: 2 }),
+    ttl: Math.floor(add(new Date(), { weeks: 2 }).getTime() / 1000),
   };
   newItem.id = hashSaleItem(newItem);
   return newItem;
