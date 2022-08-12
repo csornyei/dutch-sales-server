@@ -36,7 +36,7 @@ app.get("/healthcheck", (req, res) => {
     usage: `${Math.round(usage * 1000) / 10}%`,
   };
   const [one, five, fifteen] = os.loadavg();
-  res.send({
+  res.json({
     env: process.env.NODE_ENV,
     system_uptime: os.uptime(),
     uptime: process.uptime(),
