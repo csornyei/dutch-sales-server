@@ -32,7 +32,7 @@ export function newSaleItem(site: SupportedSites, item: Partial<SaleItem>) {
 
 function fixRelativeLinks(site: SupportedSites, link: string) {
   if (link.includes("https")) return link;
-  return `${siteValues[site]}${link}`;
+  return `${siteValues[site].linkStart}${link}`;
 }
 
 function fixString(str?: string) {
