@@ -1,7 +1,8 @@
-import { add, endOfWeek, format } from "date-fns";
+import { endOfWeek, format } from "date-fns";
 import logger from "../logger";
 import { getProperty, getTextContent, Scrapper } from "../scrapper";
 import { SalesList, SupportedSites } from "../utils/types";
+import { newSaleItem } from "../utils/utils";
 
 export async function getAldiSales() {
   try {
@@ -48,18 +49,18 @@ export async function getAldiSales() {
             .replace(/(<.*?>)|(<\/.*?>)/gm, "")
             .replace(/[\r\n\t]/gm, " ")
             .replace(/\s\s+/g, " ");
-          resultsByCategory[sectionTitle].push({
-            site: SupportedSites.aldi,
-            image: fixRelativeLinks(image),
-            link,
-            category: sectionTitle,
-            tag,
-            title,
-            subtitle: "",
-            from,
-            until,
-            ttl: add(new Date(), { weeks: 2 }),
-          });
+          resultsByCategory[sectionTitle].push(
+            newSaleItem(SupportedSites.aldi, {
+              image,
+              category: sectionTitle,
+              tag,
+              title,
+              link,
+              subtitle: "",
+              from: from ? from.trim() : "",
+              until: until ? until.trim() : "",
+            })
+          );
         }
       }
     }
@@ -69,9 +70,4 @@ export async function getAldiSales() {
     logger.log("error", `error while getting Aldi sales`, error);
     return {};
   }
-}
-
-function fixRelativeLinks(link: string) {
-  if (link.includes("https")) return link;
-  return `https://www.aldi.nl${link}`;
 }

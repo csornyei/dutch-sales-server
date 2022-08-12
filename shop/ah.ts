@@ -1,7 +1,7 @@
-import { add } from "date-fns";
 import logger from "../logger";
 import { getProperty, getTextContent, Scrapper } from "../scrapper";
 import { SalesList, SupportedSites } from "../utils/types";
+import { newSaleItem } from "../utils/utils";
 
 export async function getAHSales() {
   try {
@@ -35,18 +35,18 @@ export async function getAHSales() {
         const image = await getProperty(card, "picture>img", "src");
         const title = await getTextContent(card, "div>p>span");
         const tag = await getTextContent(card, "div>div>p");
-        resultsByCategory[sectionTitle].push({
-          site: SupportedSites.albertHeijn,
-          image,
-          link: typeof link === "string" ? link : "",
-          category: sectionTitle,
-          tag,
-          title,
-          subtitle: "",
-          from,
-          until,
-          ttl: add(new Date(), { weeks: 2 }),
-        });
+        resultsByCategory[sectionTitle].push(
+          newSaleItem(SupportedSites.albertHeijn, {
+            image,
+            category: sectionTitle,
+            tag,
+            title,
+            link: typeof link === "string" ? link : "",
+            subtitle: "",
+            from: from ? from.trim() : "",
+            until: until ? until.trim() : "",
+          })
+        );
       }
     }
     await scrapper.close();
