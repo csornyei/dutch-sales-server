@@ -1,6 +1,6 @@
 {
   "name": "sales-server",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "Express server to get sales data",
   "main": "index.ts",
   "author": "Mate Mark Csornyei <mate@csornyei.com>",
