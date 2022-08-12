@@ -1,8 +1,8 @@
-import { add } from "date-fns";
 import { ElementHandle } from "puppeteer";
 import logger from "../logger";
 import { getProperty, getTextContent, Scrapper } from "../scrapper";
 import { SalesList, SupportedSites } from "../utils/types";
+import { newSaleItem } from "../utils/utils";
 
 export async function getJumboSales() {
   try {
@@ -55,19 +55,18 @@ export async function getJumboSales() {
             .split(title)
             .filter((s: string) => s.includes("t/m"))[0];
           const [from, until] = dates.split("t/m");
-
-          resultsByCategory[gridTitle].push({
-            site: SupportedSites.jumbo,
-            image: fixRelativeLinks(image),
-            category: gridTitle,
-            tag,
-            title,
-            link: fixRelativeLinks(titleLink),
-            subtitle,
-            from: from ? from.trim() : "",
-            until: until ? until.trim() : "",
-            ttl: add(new Date(), { weeks: 2 }),
-          });
+          resultsByCategory[gridTitle].push(
+            newSaleItem(SupportedSites.jumbo, {
+              image,
+              category: gridTitle,
+              tag,
+              title,
+              link: titleLink,
+              subtitle,
+              from: from ? from.trim() : "",
+              until: until ? until.trim() : "",
+            })
+          );
         }
       }
     }
@@ -77,9 +76,4 @@ export async function getJumboSales() {
     logger.log("error", `error while Jumbo AH sales`, error);
     return {};
   }
-}
-
-function fixRelativeLinks(link: string) {
-  if (link.includes("https")) return link;
-  return `https://www.jumbo.com${link}`;
 }

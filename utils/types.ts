@@ -1,4 +1,5 @@
 export interface SaleItem {
+  id: string;
   site: SupportedSites;
   title: string;
   category: string;
@@ -20,11 +21,10 @@ export enum SupportedSites {
   jumbo = "jumbo",
   albertHeijn = "albertHeijn",
   aldi = "aldi",
-  coop = "coop",
   ekoplaza = "ekoplaza",
 }
 
-export type SiteValue = { url: string; selector: string };
+export type SiteValue = { url: string; selector: string; linkStart: string };
 
 export type SiteValues = {
   [key in SupportedSites]: SiteValue;
