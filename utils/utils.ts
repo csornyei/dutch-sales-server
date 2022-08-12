@@ -22,6 +22,7 @@ export function newSaleItem(site: SupportedSites, item: Partial<SaleItem>) {
     title: fixString(item.title),
     link: fixRelativeLinks(site, fixString(item.link!)),
     subtitle: fixString(item.subtitle),
+    price: fixString(item.price),
     from: fixString(item.from),
     until: fixString(item.until),
     ttl: Math.floor(add(new Date(), { weeks: 2 }).getTime() / 1000),

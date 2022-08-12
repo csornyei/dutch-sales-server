@@ -58,7 +58,7 @@ router.get(
         result = [results];
       }
 
-      res.send({
+      res.json({
         result,
       });
     } catch (error) {
@@ -82,8 +82,8 @@ router.get(
         result = [results];
       }
 
-      res.send({
-        results,
+      res.json({
+        result,
       });
     } catch (error) {
       logger.log("error", `error in /shop/albert-heijn`, error);
@@ -91,7 +91,6 @@ router.get(
     }
   }
 );
-
 
 router.get(
   "/aldi",
@@ -106,7 +105,7 @@ router.get(
         result = [results];
       }
 
-      res.send({
+      res.json({
         result,
       });
     } catch (error) {
@@ -129,7 +128,7 @@ router.get(
         result = [results];
       }
 
-      res.send({
+      res.json({
         result,
       });
     } catch (error) {

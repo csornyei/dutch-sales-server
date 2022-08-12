@@ -24,7 +24,12 @@ export enum SupportedSites {
   ekoplaza = "ekoplaza",
 }
 
-export type SiteValue = { url: string; selector: string; linkStart: string };
+export type SiteValue = {
+  url: string;
+  selector: string;
+  linkStart: string;
+  htmlStateCheck: boolean;
+};
 
 export type SiteValues = {
   [key in SupportedSites]: SiteValue;

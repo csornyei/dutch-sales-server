@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from "fs";
-import { Scrapper } from "./scrapper";
+import logger from "./logger";
+import { getTextContent, Scrapper } from "./scrapper";
 import { siteValues } from "./utils/constants";
 import { SupportedSites } from "./utils/types";
 
@@ -13,10 +14,22 @@ function updateState(siteName: SupportedSites, newState: string) {
 }
 
 async function getCurrentState(site: SupportedSites) {
-  const { selector } = siteValues[site];
+  const { selector, htmlStateCheck } = siteValues[site];
   const scrapper = new Scrapper(site);
-  const html = await scrapper.getHtml();
-  const state = scrapper.getElementTextFromHtml(html, selector);
+  let state = "";
+  if (htmlStateCheck) {
+    const html = await scrapper.getHtml();
+    state = scrapper.getElementTextFromHtml(html, selector);
+  } else {
+    await scrapper.init();
+    const elem = await scrapper.$(selector);
+    if (elem) {
+      state = await getTextContent(elem, "", false);
+    } else {
+      logger.log("error", `can't find ${selector} on site ${site}`);
+    }
+    await scrapper.close();
+  }
   return state.trim();
 }
 
