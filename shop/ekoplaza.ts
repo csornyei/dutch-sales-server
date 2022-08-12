@@ -61,6 +61,7 @@ export async function getEkoplazaSales() {
             title,
             link: link,
             subtitle,
+            price,
             from: from ? from.trim() : "",
             until: until ? until.trim() : "",
           })
